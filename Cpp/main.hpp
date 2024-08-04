@@ -4,5 +4,6 @@
 #include <iostream>
 #include <vector>
 #include <limits>
+#include <string>
 
 #endif /* CPP_MAIN_HPP */
