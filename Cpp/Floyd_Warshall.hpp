@@ -9,13 +9,13 @@ private:
     uint16_t nb_of_vertices;
     std::vector<std::vector<long long int>> shortest_path_mt;
 
-    const long long int INF = std::numeric_limits<long long int>::max();
-
 public:
-    Floyd_Warshall(const uint16_t nb_of_vertices);
+    Floyd_Warshall(const uint16_t nb_of_vertices, const std::vector<std::vector<long long int>> graph);
 
     uint16_t nbOfVertices(void) const;
-    void addEdge(const uint8_t vertex1, const uint8_t vertex2, const long long int weight);
+
+    // void addEdge(const uint16_t vertex1, const uint16_t vertex2, const long long int weight);
+    void runAlgorithm(void);
     void printMatrix(void) const;
 };
 

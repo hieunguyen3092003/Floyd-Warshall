@@ -10,7 +10,7 @@ CXXFLAGS = -Wall -Wextra -std=c++17
 TARGET = main
 
 # Source files
-SRCS = main.cpp Floyd_Warshall.cpp
+SRCS = main.cpp Floyd_Warshall.cpp Input_Handle.cpp
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)

@@ -1,8 +1,9 @@
 #include "Floyd_Warshall.hpp"
 
-Floyd_Warshall::Floyd_Warshall(const uint16_t nb_of_vertices)
+Floyd_Warshall::Floyd_Warshall(const uint16_t nb_of_vertices,
+                               const std::vector<std::vector<long long int>> graph)
     : nb_of_vertices(nb_of_vertices),
-      shortest_path_mt(nb_of_vertices, std::vector<long long int>(nb_of_vertices, this->INF))
+      shortest_path_mt(graph)
 {
     for (size_t i = 0; i < this->nb_of_vertices; ++i)
     {
@@ -14,11 +15,6 @@ Floyd_Warshall::Floyd_Warshall(const uint16_t nb_of_vertices)
 uint16_t Floyd_Warshall::nbOfVertices() const
 {
     return this->nb_of_vertices;
-}
-
-void Floyd_Warshall::addEdge(const uint8_t vertex1, const uint8_t vertex2, const long long int weight)
-{
-    return;
 }
 
 void Floyd_Warshall::printMatrix() const
