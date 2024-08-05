@@ -14,10 +14,15 @@ void tc(void);
 
 int main()
 {
-    Input_Handler input_handler;
+    Input_Handler input_handler(0, 0);
 
-    Floyd_Warshall floyd_warshall(input_handler.getValidatedVertices(1, 100),
+    (void)input_handler.ipVerticesNum(1, 100);
+    (void)input_handler.ipGraph();
+
+    Floyd_Warshall floyd_warshall(input_handler.getVerticesNum(),
                                   input_handler.getGraph());
+
+    floyd_warshall.runAlgorithm();
 
     return 0;
 }

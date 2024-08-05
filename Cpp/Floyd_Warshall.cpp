@@ -17,6 +17,11 @@ uint16_t Floyd_Warshall::nbOfVertices() const
     return this->nb_of_vertices;
 }
 
+void Floyd_Warshall::runAlgorithm()
+{
+    return;
+}
+
 void Floyd_Warshall::printMatrix() const
 {
     return;

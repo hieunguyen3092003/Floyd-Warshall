@@ -3,7 +3,7 @@
 Input_Handler::Input_Handler(uint16_t nb_of_vertices, uint16_t input_type)
     : nb_of_vertices(nb_of_vertices), input_type(input_type) {}
 
-int Input_Handler::getValidatedVertices(int min, int max)
+uint16_t Input_Handler::ipVerticesNum(int min, int max)
 {
     system("clear");
 
@@ -29,9 +29,16 @@ int Input_Handler::getValidatedVertices(int min, int max)
     return this->nb_of_vertices;
 }
 
+uint16_t Input_Handler::getVerticesNum() const
+{
+    return this->nb_of_vertices;
+}
+
 void Input_Handler::initializeGraph()
 {
     this->graph.resize(this->nb_of_vertices, std::vector<long long int>(this->nb_of_vertices, INF));
+
+    this->graph[0][0] = INF;
 }
 
 uint16_t Input_Handler::getInputType()
@@ -77,9 +84,9 @@ bool Input_Handler::verifyString(const std::string &str) const
         return false;
     }
 
-    if (str.find_first_of(" ", weight_pos + 1) != std::string::npos)
+    if (str.find_first_of(' ', weight_pos) != std::string::npos)
     {
-        if (str.find_first_not_of(' ', str.find_first_of(" ", weight_pos + 1)) != std::string::npos)
+        if (str.find_first_not_of(' ', str.find_first_of(' ', weight_pos + 1)) != std::string::npos)
         {
             return false;
         }
@@ -145,7 +152,7 @@ void Input_Handler::divideString(const std::string &str, uint16_t &vertex1, uint
     return;
 }
 
-std::vector<std::vector<long long int>> Input_Handler::getGraph()
+std::vector<std::vector<long long int>> Input_Handler::ipGraph()
 {
     switch (getInputType())
     {
@@ -188,6 +195,11 @@ std::vector<std::vector<long long int>> Input_Handler::getGraph()
     return graph;
 }
 
+std::vector<std::vector<long long int>> Input_Handler::getGraph(void) const
+{
+    return this->graph;
+}
+
 void Input_Handler::printGraph(void) const
 {
     for (const auto &row : graph)
@@ -196,7 +208,7 @@ void Input_Handler::printGraph(void) const
         {
             if (elem == INF)
             {
-                std::cout << "INF" << " ";
+                std::cout << "INF" << ' ';
             }
             else
             {
