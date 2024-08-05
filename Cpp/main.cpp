@@ -24,6 +24,8 @@ int main()
 
     floyd_warshall.runAlgorithm();
 
+    // tc();
+
     return 0;
 }
 
@@ -33,7 +35,11 @@ void tc()
                                                      {INF, 0, 3, INF},
                                                      {3, INF, 0, 1},
                                                      {INF, INF, INF, 0}};
+
     Floyd_Warshall floyd_warshall(4, graph);
+
+    floyd_warshall.runAlgorithm();
+
     return;
 }
 

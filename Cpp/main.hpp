@@ -8,8 +8,8 @@
 #include <iomanip>
 #include <cmath>
 
-void printGraph(const uint16_t nb_of_vertices, const std::vector<std::vector<long long int>> &graph);
-
 constexpr long long int INF = std::numeric_limits<long long int>::max();
+
+void printGraph(const uint16_t nb_of_vertices, const std::vector<std::vector<long long int>> &graph);
 
 #endif /* CPP_MAIN_HPP */

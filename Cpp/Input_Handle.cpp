@@ -66,15 +66,6 @@ uint16_t Input_Handler::ipInputType()
     return this->input_type;
 }
 
-bool Input_Handler::verifyGraph(const std::string &str) const
-{
-    return true;
-}
-
-void Input_Handler::devideGraph(const std::string &str, const uint16_t &vertex1, uint16_t &vertex2, long long int &weight) const
-{
-}
-
 bool Input_Handler::verifyString(const std::string &str) const
 {
     if (str.empty())
@@ -164,71 +155,34 @@ std::vector<std::vector<long long int>> Input_Handler::ipGraph()
     long long int weight = 0;
     std::string input_line("");
 
-    (void)ipInputType();
     system("clear");
 
     std::cin.ignore();
 
-    switch (this->input_type)
-    {
-    case 1:
+    while (input_line != "quit" && input_line != "Quit")
     {
         std::cout << "Number of Vertices: " << this->nb_of_vertices << '\n';
 
         printGraph(this->nb_of_vertices, this->graph);
         std::cout << '\n';
 
-        std::cout << "Enter the graph in the following format: \n";
-        std::cout << "Distance[0][0]> <Distance[0][1]> ... <Distance[0][V]>. \n";
-        std::cout << ". \n. \n. \n";
-        std::cout << "Distance[V][0]> <Distance[V][1]> ... <Distance[V][V]>. \n";
+        std::cout << "Enter the path and weight in the following format: <vertex1> <vertex2> <weight>. \n";
+        std::cout << "For example, 'A B 3' means a path from vertex A to vertex B with a cost of 3. \n";
         std::cout << "Input \"quit\" or \"Quit\" to finish input \n";
 
-        while (input_line != "quit" && input_line != "Quit")
+        std::getline(std::cin, input_line);
+
+        system("clear");
+
+        if (verifyString(input_line))
         {
-            while (vertex1)
-            {
-                std::cout << "Row " << vertex1 << ": ";
-                std::getline(std::cin, input_line);
-
-                if (verifyGraph(input_line))
-                {
-                }
-
-                ++vertex1;
-            }
+            divideString(input_line, vertex1, vertex2, weight);
+            this->graph[vertex1][vertex2] = weight;
         }
-        break;
-    }
-    case 2:
-    {
-        while (input_line != "quit" && input_line != "Quit")
+        else
         {
-            std::cout << "Number of Vertices: " << this->nb_of_vertices << '\n';
-
-            printGraph(this->nb_of_vertices, this->graph);
-            std::cout << '\n';
-
-            std::cout << "Enter the path and weight in the following format: <vertex1> <vertex2> <weight>. \n";
-            std::cout << "For example, 'A B 3' means a path from vertex A to vertex B with a cost of 3. \n";
-            std::cout << "Input \"quit\" or \"Quit\" to finish input \n";
-
-            std::getline(std::cin, input_line);
-
-            system("clear");
-
-            if (verifyString(input_line))
-            {
-                divideString(input_line, vertex1, vertex2, weight);
-                this->graph[vertex1][vertex2] = weight;
-            }
-            else
-            {
-                std::cout << "Invalid input! \n";
-            }
+            std::cout << "Invalid input! \n";
         }
-        break;
-    }
     }
 
     return this->graph;
