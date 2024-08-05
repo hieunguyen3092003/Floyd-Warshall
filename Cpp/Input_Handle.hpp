@@ -18,14 +18,16 @@ public:
 
     void initializeGraph(void);
 
-    uint16_t getInputType(void);
+    uint16_t ipInputType(void);
 
-    bool verifyString(const std::string &str) const;
-    void divideString(const std::string &str, uint16_t &vertex1, uint16_t &vertex2, long long int &weight) const;
     std::vector<std::vector<long long int>> ipGraph(void);
     std::vector<std::vector<long long int>> getGraph(void) const;
 
-    void printGraph(void) const;
+private:
+    bool verifyGraph(const std::string &str) const;
+    void devideGraph(const std::string &str, const uint16_t &vertex1, uint16_t &vertex2, long long int &weight) const;
+    bool verifyString(const std::string &str) const;
+    void divideString(const std::string &str, uint16_t &vertex1, uint16_t &vertex2, long long int &weight) const;
 };
 
 #endif /* CPP_INPUT_HANDLER_HPP */

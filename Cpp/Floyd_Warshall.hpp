@@ -14,9 +14,7 @@ public:
 
     uint16_t nbOfVertices(void) const;
 
-    // void addEdge(const uint16_t vertex1, const uint16_t vertex2, const long long int weight);
     void runAlgorithm(void);
-    void printMatrix(void) const;
 };
 
 #endif /* CPP_FLOYD_WARSHALL_HPP */

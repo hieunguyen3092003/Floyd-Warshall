@@ -37,17 +37,15 @@ uint16_t Input_Handler::getVerticesNum() const
 void Input_Handler::initializeGraph()
 {
     this->graph.resize(this->nb_of_vertices, std::vector<long long int>(this->nb_of_vertices, INF));
-
-    this->graph[0][0] = INF;
 }
 
-uint16_t Input_Handler::getInputType()
+uint16_t Input_Handler::ipInputType()
 {
     system("clear");
 
     std::cout << "Number of Vertices: " << this->nb_of_vertices << "\n\n";
 
-    std::cout << "1. Input as grapth" << "                " << "2. Input as single path weight \n";
+    std::cout << "1. Input as grapth" << std::setw(50) << "2. Input as single path weight \n";
     std::cout << "Please select input type: ";
     std::cin >> this->input_type;
     while (this->input_type != 1 && this->input_type != 2)
@@ -68,6 +66,15 @@ uint16_t Input_Handler::getInputType()
     return this->input_type;
 }
 
+bool Input_Handler::verifyGraph(const std::string &str) const
+{
+    return true;
+}
+
+void Input_Handler::devideGraph(const std::string &str, const uint16_t &vertex1, uint16_t &vertex2, long long int &weight) const
+{
+}
+
 bool Input_Handler::verifyString(const std::string &str) const
 {
     if (str.empty())
@@ -86,27 +93,27 @@ bool Input_Handler::verifyString(const std::string &str) const
 
     if (str.find_first_of(' ', weight_pos) != std::string::npos)
     {
-        if (str.find_first_not_of(' ', str.find_first_of(' ', weight_pos + 1)) != std::string::npos)
+        if (str.find_first_not_of(' ', str.find_first_of(' ', weight_pos)) != std::string::npos)
         {
             return false;
         }
     }
 
-    if (str[vertex1_pos] < 'A' || str[vertex1_pos] > 'Z' ||
-        (str[vertex1_pos] - 'A') >= nb_of_vertices || str[vertex1_pos + 1] != ' ')
+    if (!(str[vertex1_pos] >= 'A' && str[vertex1_pos] <= 'Z') ||
+        (str[vertex1_pos] - 'A') >= this->nb_of_vertices || str[vertex1_pos + 1] != ' ')
     {
         return false;
     }
 
-    if (str[vertex2_pos] < 'A' || str[vertex2_pos] > 'Z' ||
-        (str[vertex2_pos] - 'A') >= nb_of_vertices || str[vertex2_pos + 1] != ' ')
+    if (!(str[vertex2_pos] >= 'A' && str[vertex2_pos] <= 'Z') ||
+        (str[vertex2_pos] - 'A') >= this->nb_of_vertices || str[vertex2_pos + 1] != ' ')
     {
         return false;
     }
 
     if (str[weight_pos] == '-')
     {
-        if (++weight_pos >= str.size())
+        if ((++weight_pos) >= str.size())
         {
             return false;
         }
@@ -117,7 +124,7 @@ bool Input_Handler::verifyString(const std::string &str) const
         {
             break;
         }
-        if (str[weight_pos] < '0' && str[weight_pos] > '9')
+        if (!(str[weight_pos] >= '0' && str[weight_pos] <= '9'))
         {
             return false;
         }
@@ -140,81 +147,94 @@ void Input_Handler::divideString(const std::string &str, uint16_t &vertex1, uint
         if (str[i] == '-')
         {
             weight = -weight;
+
+            break;
         }
         weight += (str[i] - '0') * pow;
         pow *= 10;
     }
-
-    std::cout << vertex1 << '\n'
-              << vertex2 << '\n'
-              << weight << '\n';
 
     return;
 }
 
 std::vector<std::vector<long long int>> Input_Handler::ipGraph()
 {
-    switch (getInputType())
+    uint16_t vertex1 = 0;
+    uint16_t vertex2 = 0;
+    long long int weight = 0;
+    std::string input_line("");
+
+    (void)ipInputType();
+    system("clear");
+
+    std::cin.ignore();
+
+    switch (this->input_type)
     {
     case 1:
     {
+        std::cout << "Number of Vertices: " << this->nb_of_vertices << '\n';
 
+        printGraph(this->nb_of_vertices, this->graph);
+        std::cout << '\n';
+
+        std::cout << "Enter the graph in the following format: \n";
+        std::cout << "Distance[0][0]> <Distance[0][1]> ... <Distance[0][V]>. \n";
+        std::cout << ". \n. \n. \n";
+        std::cout << "Distance[V][0]> <Distance[V][1]> ... <Distance[V][V]>. \n";
+        std::cout << "Input \"quit\" or \"Quit\" to finish input \n";
+
+        while (input_line != "quit" && input_line != "Quit")
+        {
+            while (vertex1)
+            {
+                std::cout << "Row " << vertex1 << ": ";
+                std::getline(std::cin, input_line);
+
+                if (verifyGraph(input_line))
+                {
+                }
+
+                ++vertex1;
+            }
+        }
         break;
     }
     case 2:
     {
-        std::string input_line("");
-        uint16_t vertex1 = 0;
-        uint16_t vertex2 = 0;
-        long long int weight = 0;
-
         while (input_line != "quit" && input_line != "Quit")
         {
-            system("clear");
-
             std::cout << "Number of Vertices: " << this->nb_of_vertices << '\n';
 
-            printGraph();
+            printGraph(this->nb_of_vertices, this->graph);
             std::cout << '\n';
 
             std::cout << "Enter the path and weight in the following format: <vertex1> <vertex2> <weight>. \n";
             std::cout << "For example, 'A B 3' means a path from vertex A to vertex B with a cost of 3. \n";
+            std::cout << "Input \"quit\" or \"Quit\" to finish input \n";
 
             std::getline(std::cin, input_line);
+
+            system("clear");
 
             if (verifyString(input_line))
             {
                 divideString(input_line, vertex1, vertex2, weight);
+                this->graph[vertex1][vertex2] = weight;
             }
-            this->graph[vertex1][vertex2] = weight;
+            else
+            {
+                std::cout << "Invalid input! \n";
+            }
         }
         break;
     }
     }
 
-    return graph;
+    return this->graph;
 }
 
 std::vector<std::vector<long long int>> Input_Handler::getGraph(void) const
 {
     return this->graph;
-}
-
-void Input_Handler::printGraph(void) const
-{
-    for (const auto &row : graph)
-    {
-        for (const auto &elem : row)
-        {
-            if (elem == INF)
-            {
-                std::cout << "INF" << ' ';
-            }
-            else
-            {
-                std::cout << elem << ' ';
-            }
-        }
-        std::cout << '\n';
-    }
 }
