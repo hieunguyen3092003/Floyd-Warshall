@@ -1,7 +1,12 @@
 #include "Input_Handle.hpp"
 
-Input_Handler::Input_Handler(uint16_t nb_of_vertices, uint16_t input_type)
-    : nb_of_vertices(nb_of_vertices), input_type(input_type) {}
+Input_Handler::Input_Handler()
+    : nb_of_vertices(0), input_type(0)
+{
+    (void)ipVerticesNum(1, 8);
+    (void)ipInputType();
+    (void)ipGraph();
+}
 
 uint16_t Input_Handler::ipVerticesNum(int min, int max)
 {
@@ -32,6 +37,11 @@ uint16_t Input_Handler::ipVerticesNum(int min, int max)
 uint16_t Input_Handler::getVerticesNum() const
 {
     return this->nb_of_vertices;
+}
+
+std::vector<std::vector<long long int>> Input_Handler::getGraph(void) const
+{
+    return this->graph;
 }
 
 void Input_Handler::initializeGraph()
@@ -68,6 +78,36 @@ uint16_t Input_Handler::ipInputType()
 
 bool Input_Handler::verifyGraph(const std::string &str) const
 {
+    if (str.empty())
+    {
+        return false;
+    }
+
+    size_t vertex_pos = 0;
+
+    for (size_t i = 0; i < this->nb_of_vertices; ++i)
+    {
+        vertex_pos = str.find_first_not_of(' ', vertex_pos);
+
+        if (vertex_pos == std::string::npos)
+        {
+            return false;
+        }
+
+        while (str[vertex_pos] != ' ')
+        {
+            if (!(str[vertex_pos] >= '0' && str[vertex_pos] <= '9'))
+            {
+                return false;
+            }
+            if (vertex_pos == this->nb_of_vertices - 1)
+            {
+                break;
+                ++vertex_pos;
+            }
+        }
+    }
+
     return true;
 }
 
@@ -164,7 +204,6 @@ std::vector<std::vector<long long int>> Input_Handler::ipGraph()
     long long int weight = 0;
     std::string input_line("");
 
-    (void)ipInputType();
     system("clear");
 
     std::cin.ignore();
@@ -173,30 +212,34 @@ std::vector<std::vector<long long int>> Input_Handler::ipGraph()
     {
     case 1:
     {
-        std::cout << "Number of Vertices: " << this->nb_of_vertices << '\n';
-
-        printGraph(this->nb_of_vertices, this->graph);
-        std::cout << '\n';
-
-        std::cout << "Enter the graph in the following format: \n";
-        std::cout << "Distance[0][0]> <Distance[0][1]> ... <Distance[0][V]>. \n";
-        std::cout << ". \n. \n. \n";
-        std::cout << "Distance[V][0]> <Distance[V][1]> ... <Distance[V][V]>. \n";
-        std::cout << "Input \"quit\" or \"Quit\" to finish input \n";
-
         while (input_line != "quit" && input_line != "Quit")
         {
-            while (vertex1)
+            std::cout << "Number of Vertices: " << this->nb_of_vertices << '\n';
+
+            printGraph(this->nb_of_vertices, this->graph);
+            std::cout << '\n';
+
+            std::cout << "Enter the graph in the following format: \n";
+            std::cout << "<Distance[0][0]> <Distance[0][1]> ... <Distance[0][V]>. \n";
+            std::cout << ". \n. \n. \n";
+            std::cout << "<Distance[V][0]> <Distance[V][1]> ... <Distance[V][V]>. \n";
+            std::cout << "Input \"quit\" or \"Quit\" to finish input \n";
+
+            std::cout << "Row " << ((vertex1 % this->nb_of_vertices) + 1) << ": ";
+            std::getline(std::cin, input_line);
+
+            system("clear");
+
+            if (verifyGraph(input_line))
             {
-                std::cout << "Row " << vertex1 << ": ";
-                std::getline(std::cin, input_line);
-
-                if (verifyGraph(input_line))
-                {
-                }
-
-                ++vertex1;
+                std::cout << "True\n";
             }
+            else
+            {
+                std::cout << "Invalid input! \n";
+            }
+
+            ++vertex1;
         }
         break;
     }
@@ -231,10 +274,5 @@ std::vector<std::vector<long long int>> Input_Handler::ipGraph()
     }
     }
 
-    return this->graph;
-}
-
-std::vector<std::vector<long long int>> Input_Handler::getGraph(void) const
-{
     return this->graph;
 }

@@ -189,3 +189,4 @@ cython_debug/
 *.exe
 *.out
 *.app
+main

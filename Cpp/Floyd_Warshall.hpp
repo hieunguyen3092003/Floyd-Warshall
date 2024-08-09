@@ -12,7 +12,8 @@ private:
 public:
     Floyd_Warshall(const uint16_t nb_of_vertices, const std::vector<std::vector<long long int>> graph);
 
-    uint16_t nbOfVertices(void) const;
+    uint16_t getVerticesNum(void) const;
+    std::vector<std::vector<long long int>> getShortestPathMT(void) const;
 
     void runAlgorithm(void);
 };

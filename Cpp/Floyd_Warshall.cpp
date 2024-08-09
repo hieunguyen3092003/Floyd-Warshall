@@ -3,13 +3,32 @@
 Floyd_Warshall::Floyd_Warshall(const uint16_t nb_of_vertices,
                                const std::vector<std::vector<long long int>> graph)
     : nb_of_vertices(nb_of_vertices),
-      shortest_path_mt(graph) {}
+      shortest_path_mt(graph)
+{
+    if (this->nb_of_vertices != this->shortest_path_mt.size())
+    {
+        throw std::invalid_argument("The number of vertices does not match the size of the graph matrix");
+    }
+
+    for (const auto &row : graph)
+    {
+        if (row.size() != this->nb_of_vertices)
+        {
+            throw std::invalid_argument("Graph matrix is not square");
+        }
+    }
+}
 
 // O(V)
 
-uint16_t Floyd_Warshall::nbOfVertices() const
+uint16_t Floyd_Warshall::getVerticesNum() const
 {
     return this->nb_of_vertices;
+}
+
+std::vector<std::vector<long long int>> Floyd_Warshall::getShortestPathMT() const
+{
+    return this->shortest_path_mt;
 }
 
 void Floyd_Warshall::runAlgorithm()
